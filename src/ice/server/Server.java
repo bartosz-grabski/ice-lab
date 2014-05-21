@@ -8,6 +8,7 @@ import FinancialNews.NewsReceiverPrx;
 import FinancialNews.NewsReceiverPrxHelper;
 import FinancialNews.NewsServerPrx;
 import FinancialNews.NewsServerPrxHelper;
+import Ice.Connection;
 import Ice.ObjectAdapter;
 
 public class Server {
@@ -26,14 +27,16 @@ public class Server {
 			
 			ic = Ice.Util.initialize(args);
 			Ice.ObjectAdapter adapter = ic.createObjectAdapter(OBJECT_ADAPTER_ID);
-			Ice.ObjectPrx newsServerPrx = ic.propertyToProxy("SR.News");
+			
+			
 			Ice.PluginManager pluginMgr = ic.getPluginManager();
 			Ice.Plugin plugin = pluginMgr.getPlugin("IceSSL");
 			IceSSL.Plugin sslPlugin = (IceSSL.Plugin)plugin;
 			sslPlugin.setCertificateVerifier(new CertificateVerifier());
 			
-			NewsServerPrx newsServer = NewsServerPrxHelper.checkedCast(newsServerPrx);
-			new Receiver(ic, newsServer).start();
+			
+			
+			new Receiver(ic).start();
 			
 			this.configureBankManager(adapter,ic);
 			this.configureSilverAccountEvictor(adapter);
@@ -92,7 +95,7 @@ class Receiver extends Thread {
 	Ice.Communicator ic = null;
 	NewsServerPrx newsServer;
 	
-	public Receiver(Ice.Communicator ic, NewsServerPrx newsServer) {
+	public Receiver(Ice.Communicator ic) {
 	
 		this.ic = ic;
 		this.newsServer = newsServer;
@@ -102,12 +105,36 @@ class Receiver extends Thread {
 	@Override
 	public void run() {
 		
-		Ice.ObjectAdapter receiverAdapter = ic.createObjectAdapter("");
-		NewsReceiver receiver = NewsReceiver.getReceiver();
-		
-		NewsReceiverPrx receiverProxy = NewsReceiverPrxHelper.uncheckedCast(receiverAdapter.add(receiver, ic.stringToIdentity(RECEIVER_ID)));
 		
 		
+		
+		while(true) {
+			
+			try {
+				
+				Ice.ObjectPrx newsServerPrx = ic.propertyToProxy("SR.News");
+				NewsServerPrx newsServer = NewsServerPrxHelper.checkedCast(newsServerPrx);
+				
+				Connection connection = newsServer.ice_getConnection();
+				
+				Ice.ObjectAdapter receiverAdapter = ic.createObjectAdapter("NewsListenerAdapter");
+				
+				connection.setAdapter(receiverAdapter);
+				NewsReceiver receiver = NewsReceiver.getReceiver();
+				
+				NewsReceiverPrx receiverProxy = NewsReceiverPrxHelper.uncheckedCast(receiverAdapter.add(receiver, ic.stringToIdentity(RECEIVER_ID)));
+				
+				receiverAdapter.activate();
+				newsServer.registerForNews(receiverProxy);
+				
+				Thread.sleep(5000);
+				
+			} catch (Exception e) {
+				
+			}
+			
+		}
+
 	}
 	
 

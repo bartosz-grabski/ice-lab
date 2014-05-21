@@ -2,16 +2,9 @@ package ice.impl;
 
 import ice.persistance.AccountService;
 import ice.persistance.model.Account;
-import ice.utils.FileUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import Bank.IncorrectData;
@@ -27,8 +20,6 @@ import Ice.StringHolder;
 public class BankManager extends Bank._BankManagerDisp {
 	
 	private static final Logger logger = Logger.getLogger(BankManager.class.getName());
-	
-	private static final String ACCOUNTS_DIR = "/accounts";
 	private static final int ACCOUNT_NR_LENGTH = 26;
 	private static final int DEFAULT_BALANCE = 10000;
 	
@@ -69,7 +60,10 @@ public class BankManager extends Bank._BankManagerDisp {
 	public void removeAccount(String accountID, Current __current)
 			throws IncorrectData, NoSuchAccount {
 		
-		//TODO
+		String currentAccount = __current.id.name;
+		AccountService.getService().removeAccountById(currentAccount);
+		
+		
 		
 	}
 	

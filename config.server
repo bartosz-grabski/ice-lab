@@ -4,8 +4,9 @@
 # adapter.
 #
 
+SR.News=financialnews:tcp -h 149.156.97.154 -p 11113
 objectAdapter.Endpoints=tcp -h 0.0.0.0 -p 10000:udp -h 0.0.0.0 -p 10000:ssl -h 0.0.0.0 -p 10001
-
+NewsListenerAdapter.Endpoints=tcp -h 0.0.0.0 -p 10002:udp -h 0.0.0.0 -p 10002
 
 #Ice.ThreadPool.Client.Size=4
 #Ice.ThreadPool.Server.Size=4

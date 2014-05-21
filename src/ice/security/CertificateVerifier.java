@@ -13,7 +13,7 @@ public class CertificateVerifier implements IceSSL.CertificateVerifier {
 	@Override
 	public boolean verify(NativeConnectionInfo info) {
 		
-		if (info.nativeCerts[0] != null)
+		/*if (info.nativeCerts[0] != null)
         {
             X509Certificate cert = (X509Certificate) info.nativeCerts[0];
          
@@ -31,8 +31,8 @@ public class CertificateVerifier implements IceSSL.CertificateVerifier {
             	
             	return true;
         }
-        return true;
-		
+        return true;*/
+		return true;
 		
 	}
 

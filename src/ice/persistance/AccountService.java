@@ -115,6 +115,29 @@ public class AccountService {
 	}
 	
 	
+	public void removeAccount(Account acc) {
+		
+		try {
+			String DELETE_ACCOUNT_SQL = "DELETE FROM Accounts WHERE accountId='"+acc.getAccountNumber()+"'";
+			stat.execute(DELETE_ACCOUNT_SQL);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void removeAccountById(String accountID) {
+		
+		try {
+			String DELETE_ACCOUNT_SQL = "DELETE FROM Accounts WHERE accountId='"+accountID+"'";
+			stat.execute(DELETE_ACCOUNT_SQL);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	
 	
 

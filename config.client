@@ -3,7 +3,7 @@
 # "hello" object in the server.
 #
 SR.Proxy=manager:tcp -h 127.0.0.1 -p 10000:ssl -p 12001:udp -p 10000
-SR.NewsServer=financialnews:tcp -h 149.156.97.154 -p 11113
+
 
 #
 # Warn about connection exceptions.

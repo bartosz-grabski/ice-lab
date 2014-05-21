@@ -1,6 +1,5 @@
 package ice.security;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,8 +13,8 @@ public class CertificateSigner {
 	
 	private static final String FIRSTNAME = "Bartosz";
 	private static final String LASTNAME = "Grabski";
-	private static final String CSR_FILE = "s.csr";
-	private static final String CRT_FILE = "s.crt";
+	private static final String CSR_FILE = "cs.csr";
+	private static final String CRT_FILE = "cs.crt";
 	
 	public static String readFile(String filename) {
 		   String content = null;
@@ -69,6 +68,7 @@ public class CertificateSigner {
 			System.out.println(content);
 			byte[] certificate = proxy.signCSR(FIRSTNAME, LASTNAME, content.getBytes());
 			
+			System.out.println(new String(certificate));
 			writeFile(new String(certificate), CRT_FILE);
 
 
